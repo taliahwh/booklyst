@@ -12,7 +12,7 @@ const Book = ({ book }) => {
       className="flex flex-col p-1 space-y-1 cursor-pointer"
       onClick={openPost}
     >
-      <img src={require(`../assets/${book.image}`)} alt={book.title} />
+      <img src={book.image} alt={book.title} />
       <h3 className="font-semibold text-lg">{book.title}</h3>
       <p className="text-xs text-gray-600">{book.author}</p>
 
@@ -21,9 +21,7 @@ const Book = ({ book }) => {
         <p className="text-xs text-blue-600">{book.location}</p>
       </div>
 
-      <h4 className="price text-xl font-semibold">
-        {`$${book.price.toFixed(2)}`}
-      </h4>
+      <h4 className="price text-xl font-semibold">{`$${book.price}`}</h4>
     </div>
   );
 };

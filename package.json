@@ -1,0 +1,35 @@
+{
+  "name": "booklyst",
+  "version": "1.0.0",
+  "description": "Ecommerce App for Buying and Selling Used Books",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon server/index",
+    "data:import": "node server/seeder"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taliahwh/booklyst.git"
+  },
+  "author": "Taliah Wharton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/taliahwh/booklyst/issues"
+  },
+  "homepage": "https://github.com/taliahwh/booklyst#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.1",
+    "colors": "^1.4.0",
+    "dotenv": "^15.0.0",
+    "express": "^4.17.2",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.1.9"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}

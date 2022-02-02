@@ -4,7 +4,12 @@ module.exports = {
     './node_modules/@themesberg/flowbite/**/*.js',
   ],
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        120: '28rem',
+        128: '32rem',
+      },
+    },
   },
   plugins: [require('@themesberg/flowbite/plugin')],
 };
