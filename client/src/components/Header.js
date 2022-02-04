@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import logo from '../assets/booklyst.svg';
 
@@ -7,25 +8,47 @@ const Header = () => {
     <nav className="bg-white shadow">
       <div className="container px-6 py-4 my-1 mx-auto">
         <div className="flex items-center justify-between">
+          {/* logo */}
           <div>
             <NavLink to="/">
               <img src={logo} alt="booklyst" className="max-h-8" />
             </NavLink>
           </div>
 
-          <div className="flex space-x-2 items-center">
-            <div>
-              <NavLink
-                to="/"
-                className="text-sm font-semibold text-white bg-blue-600 px-6 py-2 rounded-full transition-colors duration-200 transform  hover:bg-blue-700 "
-              >
-                + Lyst a Book
-              </NavLink>
-            </div>
+          {/* List a Book button */}
+          {/* <div>
+            <NavLink
+              to="/"
+              className="text-sm font-semibold text-white bg-blue-600 px-6 py-2 rounded-full transition-colors duration-200 transform  hover:bg-blue-700 "
+            >
+              + Lyst a Book
+            </NavLink>
+          </div> */}
 
+          {/* Sign in and cart */}
+
+          <div className="flex space-x-2 items-center">
             <div>
               <Dropdown />
             </div>
+
+            <div>
+              <NavLink
+                to="/cart"
+                className="text-sm font-semibold text-blue-600 "
+              >
+                <CartIcon />
+              </NavLink>
+            </div>
+
+            {/* <div>
+              <NavLink
+                to="/"
+                className="text-sm font-semibold py-2 px-5  text-white bg-blue-600 rounded-full"
+              >
+                Sign In
+              </NavLink>
+            </div> */}
           </div>
         </div>
       </div>
@@ -34,6 +57,32 @@ const Header = () => {
 };
 
 export default Header;
+
+const CartIcon = () => {
+  const { cartItems } = useSelector((state) => state.cart);
+
+  const totalItems = cartItems.reduce((acc, item) => acc + item.qty, 0);
+
+  return (
+    <button
+      className="py-4 px-1 relative border-2 border-transparent text-gray-800 rounded-full hover:text-gray-600 focus:outline-none focus:none transition duration-150 ease-in-out"
+      aria-label="Cart"
+    >
+      <i className="fas fa-shopping-cart fa-xl"></i>
+      <span className="absolute inset-0 object-right-top -mr-6">
+        <div
+          className={
+            totalItems === 0
+              ? 'hidden'
+              : 'inline-flex items-center px-1.5 py-0.5 border-2 border-white rounded-full text-xs font-semibold leading-4 bg-blue-600 text-white'
+          }
+        >
+          {totalItems}
+        </div>
+      </span>
+    </button>
+  );
+};
 
 const Dropdown = () => {
   return (

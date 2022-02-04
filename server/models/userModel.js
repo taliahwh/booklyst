@@ -1,5 +1,32 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+
+const userReviewSchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    rating: {
+      type: Number,
+      required: true,
+    },
+    comment: {
+      type: String,
+      required: true,
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
+    },
+    isAdmin: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+  },
+  { timestaps: true }
+);
 
 const userSchema = mongoose.Schema(
   {
@@ -16,10 +43,16 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    isAdmin: {
-      type: Boolean,
-      required: true,
-      default: false,
+    reviews: [userReviewSchema],
+    numReviews: {
+      type: Number,
+      requred: true,
+      default: 0,
+    },
+    rating: {
+      type: Number,
+      requred: true,
+      default: 0,
     },
     wishlist: { type: [String] },
   },

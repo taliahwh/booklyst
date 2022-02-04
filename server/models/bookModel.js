@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const reviewSchema = mongoose.Schema(
+const productReviewSchema = mongoose.Schema(
   {
     name: {
       type: String,
@@ -46,7 +46,7 @@ const bookSchema = mongoose.Schema(
       type: String,
       requred: true,
     },
-    reviews: [reviewSchema],
+    reviews: [productReviewSchema],
     numReviews: {
       type: Number,
       requred: true,

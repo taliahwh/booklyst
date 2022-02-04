@@ -9,6 +9,10 @@ module.exports = {
         120: '28rem',
         128: '32rem',
       },
+      borderWidth: {
+        1: '1px',
+      },
+      backgroundColor: ['disabled'],
     },
   },
   plugins: [require('@themesberg/flowbite/plugin')],

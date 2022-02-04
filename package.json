@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "nodemon server/index",
-    "data:import": "node server/seeder"
+    "data:import": "node server/seeder",
+    "data:destroy": "node server/seeder -d"
   },
   "repository": {
     "type": "git",
