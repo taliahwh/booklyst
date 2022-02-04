@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import Message from '../components/Message';
 
 import { addToCart, removeFromCart } from '../actions/cartActions';
@@ -8,7 +8,6 @@ import { addToCart, removeFromCart } from '../actions/cartActions';
 const CartScreen = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { id } = useParams();
 
   const qty = location.search ? Number(location.search.split('=')[1]) : 1;

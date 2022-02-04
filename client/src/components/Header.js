@@ -28,9 +28,9 @@ const Header = () => {
           {/* Sign in and cart */}
 
           <div className="flex space-x-2 items-center">
-            <div>
+            {/* <div>
               <Dropdown />
-            </div>
+            </div> */}
 
             <div>
               <NavLink
@@ -41,14 +41,14 @@ const Header = () => {
               </NavLink>
             </div>
 
-            {/* <div>
+            <div>
               <NavLink
                 to="/"
-                className="text-sm font-semibold py-2 px-5  text-white bg-blue-600 rounded-full"
+                className="text-sm font-semibold py-2 px-2  text-gray-800 rounded-md"
               >
                 Sign In
               </NavLink>
-            </div> */}
+            </div>
           </div>
         </div>
       </div>
