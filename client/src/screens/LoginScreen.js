@@ -46,7 +46,7 @@ const LoginScreen = () => {
             id="email"
             value={email}
             className="rounded-md text-gray-500 bg-gray-50"
-            placeholder="name@email.com"
+            placeholder="Enter email"
             onChange={(e) => setEmail(e.target.value)}
           />
 

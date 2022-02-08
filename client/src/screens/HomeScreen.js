@@ -17,7 +17,7 @@ const HomeScreen = () => {
     dispatch(listProducts());
   }, [dispatch]);
   return (
-    <div className="mt-10">
+    <div className="my-10">
       <h1 className="font-bold text-3xl md:text-4xl mb-6">Featured Books</h1>
 
       {loading ? (

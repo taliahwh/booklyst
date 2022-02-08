@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams, useLocation, useNavigate } from 'react-router-dom';
 import Message from '../components/Message';
 
 import { addToCart, removeFromCart } from '../actions/cartActions';
@@ -8,6 +8,7 @@ import { addToCart, removeFromCart } from '../actions/cartActions';
 const CartScreen = () => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const qty = location.search ? Number(location.search.split('=')[1]) : 1;
@@ -27,6 +28,10 @@ const CartScreen = () => {
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id));
+  };
+
+  const checkoutHandler = () => {
+    navigate('/login?redirect=/shipping');
   };
 
   useEffect(() => {
@@ -126,7 +131,11 @@ const CartScreen = () => {
               </h2>
             </div>
             <div className="flex justify-end mt-4">
-              <button className="bg-blue-600 py-2 px-10 flex justify-end text-white font-semibold rounded-md">
+              <button
+                onClick={checkoutHandler}
+                disabled={cartItems.length === 0}
+                className="bg-blue-600 py-2 px-10 flex justify-end text-white font-semibold rounded-md"
+              >
                 Checkout
               </button>
             </div>
