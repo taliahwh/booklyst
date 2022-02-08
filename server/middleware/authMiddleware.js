@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 
+// validates jwt
 const authMiddleware = asyncHandler(async (req, res, next) => {
   let token;
 
@@ -54,7 +55,11 @@ const validate = (req, res, next) => {
   const extractedErrors = [];
   errors.array().map((err) => extractedErrors.push({ [err.param]: err.msg }));
 
-  res.status(422).json({ errors: extractedErrors });
+  // res.status(422).json({ errors: extractedErrors });
+  res.status(422);
+  throw new Error(
+    'Password must be at least 5 characters long, containe one uppercase letter and one number.'
+  );
 };
 
 export { authMiddleware, userValidationRules, validate };

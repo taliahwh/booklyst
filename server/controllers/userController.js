@@ -46,7 +46,7 @@ const signIn = asyncHandler(async (req, res) => {
 // @route POST /api/users
 // @access Public
 const signUp = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, confirmPassword } = req.body;
 
   // Find user by email
   const userExists = await User.findOne({ email });
@@ -56,7 +56,14 @@ const signUp = asyncHandler(async (req, res) => {
     throw new Error('User already exists');
   }
 
-  const user = await User.create({ name, email, password });
+  if (password !== confirmPassword) {
+    res.status(400);
+    throw new Error("Passwords don't match");
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 12);
+
+  const user = await User.create({ name, email, password: hashedPassword });
 
   if (user) {
     res.status(201).json({
@@ -70,4 +77,49 @@ const signUp = asyncHandler(async (req, res) => {
   res.send({ email, password });
 });
 
-export { signIn, signUp };
+// @desc Get user profile
+// @route GET /api/users/profile
+// @access Private
+const getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+// @desc Update user profile
+// @route PUT /api/users/profile
+// @access Private
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+
+    if (req.body.password) {
+      user.password = await bcrypt.hash(req.body.password, 12);
+    }
+
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      token: generateToken(updatedUser._id),
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found.');
+  }
+});
+export { signIn, signUp, getUserProfile, updateUserProfile };

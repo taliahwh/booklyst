@@ -1,9 +1,14 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+
+import { logout } from '../actions/userActions';
+
 import logo from '../assets/booklyst.svg';
 
 const Header = () => {
+  const { userInfo } = useSelector((state) => state.userLogin);
+
   return (
     <nav className="bg-white shadow">
       <div className="container px-6 py-4 my-1 mx-auto">
@@ -28,10 +33,6 @@ const Header = () => {
           {/* Sign in and cart */}
 
           <div className="flex space-x-2 items-center">
-            {/* <div>
-              <Dropdown />
-            </div> */}
-
             <div>
               <NavLink
                 to="/cart"
@@ -41,14 +42,20 @@ const Header = () => {
               </NavLink>
             </div>
 
-            <div>
-              <NavLink
-                to="/"
-                className="text-sm font-semibold py-2 px-2  text-gray-800 rounded-md"
-              >
-                Sign In
-              </NavLink>
-            </div>
+            {userInfo ? (
+              <div>
+                <Dropdown />
+              </div>
+            ) : (
+              <div>
+                <NavLink
+                  to="/login"
+                  className="text-sm font-semibold py-2 px-2  text-gray-800 rounded-md"
+                >
+                  Sign In
+                </NavLink>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -85,6 +92,9 @@ const CartIcon = () => {
 };
 
 const Dropdown = () => {
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.userLogin);
+
   return (
     <>
       <button
@@ -93,7 +103,7 @@ const Dropdown = () => {
         type="button"
         className="relative z-10 flex items-center p-2 text-sm text-gray-600 bg-white border border-transparent rounded-md focus:none   focus:outline-none"
       >
-        <span className="mx-1">Jane Doe</span>
+        <span className="mx-1">{userInfo.name}</span>
         <svg
           className="w-5 h-5 mx-1"
           viewBox="0 0 24 24"
@@ -123,15 +133,17 @@ const Dropdown = () => {
             alt="jane avatar"
           />
           <div className="mx-1">
-            <h1 className="text-sm font-semibold text-gray-700 ">Jane Doe</h1>
-            <p className="text-sm text-gray-500 ">janedoe@exampl.com</p>
+            <h1 className="text-sm font-semibold text-gray-700 ">
+              {userInfo.name}
+            </h1>
+            <p className="text-sm text-gray-500 ">{userInfo.email}</p>
           </div>
         </NavLink>
 
         <hr className="border-gray-200 " />
 
         <NavLink
-          to="/"
+          to="/profile"
           className="flex items-center p-3 space-x-5 text-sm text-gray-600 capitalize transition-colors duration-200 transform  hover:bg-gray-100 "
         >
           <i className="fa fa-user fa-lg ml-1"></i>
@@ -173,7 +185,9 @@ const Dropdown = () => {
         >
           <i className="fa fa-cog fa-lg ml-1"></i>
 
-          <span className="mx-1">Logout</span>
+          <span className="mx-1" onClick={() => dispatch(logout())}>
+            Logout
+          </span>
         </NavLink>
       </div>
     </>
