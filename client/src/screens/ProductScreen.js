@@ -69,9 +69,7 @@ const ProductScreen = () => {
               <h3 className="text-md md:text-lg font-semibold">
                 {product.coverType}
               </h3>
-              <h3 className="text-2xl font-bold">
-                ${product.price.toFixed(2)}
-              </h3>
+              <h3 className="text-2xl font-bold">${product.price}</h3>
 
               {/* QTY, Add to Cart, and Wishlist Buttons */}
 

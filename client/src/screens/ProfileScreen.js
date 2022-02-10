@@ -51,7 +51,7 @@ const ProfileScreen = () => {
 
   return (
     <div className="container">
-      <div className="grid grid-cols-7 gap-2">
+      <div className="profile-container px-52">
         {/* User Profile Container */}
         <div className="col-span-2 ">
           <form className="flex flex-col space-y-2" onSubmit={handleSubmit}>
@@ -116,8 +116,6 @@ const ProfileScreen = () => {
             </button>
           </form>
         </div>
-        {/* Order Details Container */}
-        <div className="bg-blue-100 col-span-5">Order details</div>
       </div>
     </div>
   );

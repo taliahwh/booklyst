@@ -160,7 +160,7 @@ const Dropdown = () => {
         </NavLink>
 
         <NavLink
-          to="/"
+          to="/myorders"
           className="flex items-center p-3 space-x-6 text-sm text-gray-600 capitalize transition-colors duration-200 transform  hover:bg-gray-100 "
         >
           <i className="fa fa-receipt fa-lg ml-1"></i>
