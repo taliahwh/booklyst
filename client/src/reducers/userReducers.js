@@ -14,6 +14,17 @@ import {
   USER_UPDATE_PROFILE_FAILURE,
   USER_UPDATE_PROFILE_RESET,
   USER_LOGOUT,
+  USER_ADMIN_USER_LIST_REQUEST,
+  USER_ADMIN_USER_LIST_SUCCESS,
+  USER_ADMIN_USER_LIST_FAILURE,
+  USER_ADMIN_USER_LIST_RESET,
+  USER_ADMIN_DELETE_USER_REQUEST,
+  USER_ADMIN_DELETE_USER_SUCCESS,
+  USER_ADMIN_DELETE_USER_FAILURE,
+  USER_ADMIN_UPDATE_USER_REQUEST,
+  USER_ADMIN_UPDATE_USER_SUCCESS,
+  USER_ADMIN_UPDATE_USER_FAILURE,
+  USER_ADMIN_UPDATE_USER_RESET,
 } from '../constants/userConstants';
 
 export const userLoginReducer = (state = {}, action) => {
@@ -82,6 +93,60 @@ export const userUpdateProfileReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
 
     case USER_UPDATE_PROFILE_RESET:
+      return {};
+
+    default:
+      return state;
+  }
+};
+
+export const userAdminUserListReducer = (state = { users: [] }, action) => {
+  switch (action.type) {
+    case USER_ADMIN_USER_LIST_REQUEST:
+      return { loading: true };
+
+    case USER_ADMIN_USER_LIST_SUCCESS:
+      return { loading: false, users: action.payload };
+
+    case USER_ADMIN_USER_LIST_FAILURE:
+      return { loading: false, error: action.payload };
+
+    case USER_ADMIN_USER_LIST_RESET:
+      return { users: [] };
+
+    default:
+      return state;
+  }
+};
+
+export const userAdminDeleteUserReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_ADMIN_DELETE_USER_REQUEST:
+      return { loading: true };
+
+    case USER_ADMIN_DELETE_USER_SUCCESS:
+      return { loading: false, success: true };
+
+    case USER_ADMIN_DELETE_USER_FAILURE:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const userAdminUpdateUserReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_ADMIN_UPDATE_USER_REQUEST:
+      return { loading: true };
+
+    case USER_ADMIN_UPDATE_USER_SUCCESS:
+      return { loading: false, success: true, user: action.payload };
+
+    case USER_ADMIN_UPDATE_USER_FAILURE:
+      return { loading: false, error: action.payload };
+
+    case USER_ADMIN_UPDATE_USER_RESET:
       return {};
 
     default:

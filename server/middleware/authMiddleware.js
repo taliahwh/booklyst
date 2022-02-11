@@ -32,6 +32,15 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
   }
 });
 
+const isAdmin = (req, res, next) => {
+  if (req.user && req.user.isAdmin) {
+    next();
+  } else {
+    res.status(401);
+    throw new Error('Not authorized as an admin');
+  }
+};
+
 const userValidationRules = () => {
   // Password must contain at least 1 lowercase, uppercase, and numeric character
   const validPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])');
@@ -62,4 +71,4 @@ const validate = (req, res, next) => {
   );
 };
 
-export { authMiddleware, userValidationRules, validate };
+export { authMiddleware, userValidationRules, validate, isAdmin };

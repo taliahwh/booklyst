@@ -16,22 +16,23 @@ connectDB();
 const importData = async () => {
   try {
     // Clears the database
-    await Order.deleteMany();
-    await Book.deleteMany();
+    // await Order.deleteMany();
+    // await Book.deleteMany();
     await User.deleteMany();
 
     // Push users file into Users document
-    const createdUsers = await User.insertMany(users);
+    // const createdUsers = await User.insertMany(users);
+    await User.insertMany(users);
 
     // Stores admin user (first in users data file)
-    const adminUser = createdUsers[0]._id;
+    // const adminUser = createdUsers[0]._id;
 
     // Maps through all books and assigns adminUser to each
-    const sampleBooks = books.map((book) => {
-      return { ...book, user: adminUser };
-    });
+    // const sampleBooks = books.map((book) => {
+    //   return { ...book, user: adminUser };
+    // });
 
-    await Book.insertMany(sampleBooks);
+    // await Book.insertMany(sampleBooks);
 
     console.log('Data Imported!'.green.inverse);
     process.exit();

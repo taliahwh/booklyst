@@ -30,6 +30,8 @@ const PlaceOrderScreen = () => {
     Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)
   );
 
+  cart.totalItems = cartItems.reduce((acc, item) => acc + item.qty, 0);
+
   const placeOrderHandler = () => {
     dispatch(
       createOrder({
@@ -108,7 +110,7 @@ const PlaceOrderScreen = () => {
 
             <div className="flex justify-between px-10 py-1">
               <p className="font-semibold">Items</p>
-              <p>{cartItems.length}</p>
+              <p>{cart.totalItems}</p>
             </div>
             <hr className="border-gray-300" />
 

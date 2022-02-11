@@ -50,7 +50,7 @@ const Header = () => {
               <div>
                 <NavLink
                   to="/login"
-                  className="text-sm font-semibold py-2 px-2  text-gray-800 rounded-md"
+                  className="text-sm  py-2 px-2  text-gray-800 rounded-md"
                 >
                   Sign In
                 </NavLink>
@@ -125,18 +125,16 @@ const Dropdown = () => {
       >
         <NavLink
           to="/"
-          className="flex items-center p-3 mt-2 text-sm text-gray-600 transition-colors duration-200 transform  hover:bg-gray-100 "
+          className="flex justify-center text-center p-3 mt-2 text-sm text-gray-600 bg-gray-100 transition-colors duration-200 transform  hover:bg-gray-100 "
         >
-          <img
-            className="flex-shrink-0 object-cover mx-1 rounded-full w-9 h-9 "
-            src="https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8d29tYW4lMjBibHVlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=face&w=500&q=200"
-            alt="jane avatar"
-          />
-          <div className="mx-1">
+          <div className="mx-1 flex flex-col">
             <h1 className="text-sm font-semibold text-gray-700 ">
               {userInfo.name}
             </h1>
             <p className="text-sm text-gray-500 ">{userInfo.email}</p>
+            {userInfo.isAdmin && (
+              <span className="mt-1 text-blue-600 font-semibold">Admin</span>
+            )}
           </div>
         </NavLink>
 
@@ -177,7 +175,40 @@ const Dropdown = () => {
           <span className="mx-1">Wishlist</span>
         </NavLink>
 
-        <hr className="border-gray-200  " />
+        {userInfo.isAdmin && (
+          <>
+            <hr className="border-gray-300  " />
+
+            <NavLink
+              to="/admin/users"
+              className="flex items-center p-3 space-x-4 text-sm bg-blue-100 text-gray-600 capitalize transition-colors duration-200 transform  hover:bg-white "
+            >
+              <i className="fa fa-users fa-lg ml-1"></i>
+
+              <span className="mx-1">Admin Users</span>
+            </NavLink>
+
+            <NavLink
+              to="/"
+              className="flex items-center p-3 space-x-4 text-sm bg-blue-100 text-gray-600 capitalize transition-colors duration-200 transform  hover:bg-white "
+            >
+              <i className="fa fa-book fa-lg ml-1"></i>
+
+              <span className="mx-1">Admin Products</span>
+            </NavLink>
+
+            <NavLink
+              to="/"
+              className="flex items-center p-3 space-x-4 text-sm bg-blue-100 text-gray-600 capitalize transition-colors duration-200 transform  hover:bg-white "
+            >
+              <i className="fa fa-barcode fa-lg ml-1"></i>
+
+              <span className="mx-1">Admin Orders</span>
+            </NavLink>
+          </>
+        )}
+
+        <hr className="border-gray-300  " />
 
         <NavLink
           to="/"

@@ -19,11 +19,6 @@ const userReviewSchema = mongoose.Schema(
       required: true,
       ref: 'User',
     },
-    isAdmin: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
   },
   { timestaps: true }
 );
@@ -53,6 +48,11 @@ const userSchema = mongoose.Schema(
       type: Number,
       requred: true,
       default: 0,
+    },
+    isAdmin: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
     wishlist: { type: [String] },
   },

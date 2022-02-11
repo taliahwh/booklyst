@@ -24,7 +24,7 @@ const OrderScreen = () => {
   );
 
   const successPaymentHandler = (paymentResult) => {
-    console.log(paymentResult);
+    // console.log(paymentResult);
     dispatch(payOrder(id, paymentResult));
   };
 
@@ -146,7 +146,13 @@ const OrderScreen = () => {
 
               <div className="flex justify-between px-10 py-1">
                 <p className="font-semibold">Subtotal</p>
-                <p>${order.orderItems.length}</p>
+                <p>
+                  $
+                  {(
+                    order.totalPrice -
+                    (order.taxPrice + order.shippingPrice)
+                  ).toFixed(2)}
+                </p>
               </div>
               <hr className="border-gray-300" />
 
