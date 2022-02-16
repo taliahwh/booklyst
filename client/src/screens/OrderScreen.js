@@ -8,8 +8,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
-import { getOrderDetails, payOrder } from '../actions/orderActions';
-import { ORDER_PAY_RESET } from '../constants/orderConstants';
+import {
+  getOrderDetails,
+  payOrder,
+  deliverOrder,
+} from '../actions/orderActions';
+import {
+  ORDER_PAY_RESET,
+  ORDER_DELIVER_RESET,
+} from '../constants/orderConstants';
 
 const OrderScreen = () => {
   const dispatch = useDispatch();
@@ -22,10 +29,17 @@ const OrderScreen = () => {
   const { loading: loadingPay, success: successPay } = useSelector(
     (state) => state.orderPay
   );
+  const { loading: loadingDeliver, success: successDeliver } = useSelector(
+    (state) => state.orderDeliver
+  );
 
   const successPaymentHandler = (paymentResult) => {
     // console.log(paymentResult);
     dispatch(payOrder(id, paymentResult));
+  };
+
+  const handleDelivery = () => {
+    dispatch(deliverOrder(order));
   };
 
   useEffect(() => {
@@ -43,8 +57,9 @@ const OrderScreen = () => {
       document.body.appendChild(script);
     };
 
-    if (!order || successPay) {
+    if (!order || successPay || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET });
+      dispatch({ type: ORDER_DELIVER_RESET });
       dispatch(getOrderDetails(id));
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -53,7 +68,7 @@ const OrderScreen = () => {
         setSdkReady(true);
       }
     }
-  }, [dispatch, id, successPay, order]);
+  }, [dispatch, id, successPay, successDeliver, order]);
 
   return loading ? (
     <Loader />
@@ -189,6 +204,20 @@ const OrderScreen = () => {
                       </div>
                     </>
                   )}
+                </>
+              )}
+
+              {order.isPaid && !order.isDelivered && (
+                <>
+                  {loadingDeliver && <Loader />}
+                  <hr className="border-gray-300" />
+                  <button
+                    type="button"
+                    onClick={handleDelivery}
+                    className="bg-blue-600 hover:bg-blue-700 transition duration-200 text-white font-semibold py-2 mx-2 rounded-md"
+                  >
+                    Mark As Delivered
+                  </button>
                 </>
               )}
             </div>

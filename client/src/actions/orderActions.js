@@ -13,6 +13,12 @@ import {
   ORDER_MY_ORDERS_REQUEST,
   ORDER_MY_ORDERS_SUCCESS,
   ORDER_MY_ORDERS_FAILURE,
+  ORDER_ADMIN_ORDERS_REQUEST,
+  ORDER_ADMIN_ORDERS_SUCCESS,
+  ORDER_ADMIN_ORDERS_FAILURE,
+  ORDER_DELIVER_REQUEST,
+  ORDER_DELIVER_SUCCESS,
+  ORDER_DELIVER_FAILURE,
 } from '../constants/orderConstants';
 
 import { CART_ITEMS_RESET } from '../constants/cartConstants';
@@ -101,6 +107,33 @@ export const getMyOrders = () => async (dispatch, getState) => {
   }
 };
 
+export const getAllOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ORDER_ADMIN_ORDERS_REQUEST });
+
+    const { userInfo } = getState().userLogin;
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get('/api/orders', config);
+
+    localStorage.setItem('userInfo', JSON.stringify(data));
+    dispatch({ type: ORDER_ADMIN_ORDERS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: ORDER_ADMIN_ORDERS_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
 export const payOrder =
   (orderId, paymentResult) => async (dispatch, getState) => {
     try {
@@ -132,3 +165,33 @@ export const payOrder =
       });
     }
   };
+
+export const deliverOrder = (order) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ORDER_DELIVER_REQUEST });
+
+    const { userInfo } = getState().userLogin;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `/api/orders/${order._id}/deliver`,
+      {},
+      config
+    );
+
+    localStorage.setItem('userInfo', JSON.stringify(data));
+    dispatch({ type: ORDER_DELIVER_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: ORDER_DELIVER_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

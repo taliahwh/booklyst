@@ -38,26 +38,32 @@ const LoginScreen = () => {
 
           {error && <Message variant="danger">{error}</Message>}
 
-          <label className="text-gray-700" htmlFor="email">
+          <label
+            className="block mb-2 text-sm font-medium text-gray-900"
+            htmlFor="email"
+          >
             Email Address
           </label>
           <input
             type="email"
             id="email"
             value={email}
-            className="rounded-md text-gray-500 bg-gray-50"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Enter email"
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <label className="text-gray-700 pt-2" htmlFor="password">
+          <label
+            className="block mb-2 text-sm font-medium text-gray-900"
+            htmlFor="password"
+          >
             Password
           </label>
           <input
             type="password"
             id="password"
             value={password}
-            className="rounded-md text-gray-500 bg-gray-50"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="•••••••"
             onChange={(e) => setPassword(e.target.value)}
           />

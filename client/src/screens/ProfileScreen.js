@@ -55,62 +55,76 @@ const ProfileScreen = () => {
         {/* User Profile Container */}
         <div className="col-span-2 ">
           <form className="flex flex-col space-y-2" onSubmit={handleSubmit}>
-            <h1 className="text-2xl font-semibold mb-5">User Profile</h1>
+            <h1 className="text-2xl font-semibold mt-10 mb-5 text-center">
+              User Profile
+            </h1>
 
             {message && <Message variant="danger">{message}</Message>}
             {success && <Message variant="success">Profile updated.</Message>}
 
-            <label className="text-gray-700" htmlFor="name">
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900"
+              htmlFor="name"
+            >
               Name
             </label>
             <input
               type="text"
               id="name"
               value={name}
-              className="rounded-md text-gray-800 bg-gray-100 border-none"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="Enter name"
               onChange={(e) => setName(e.target.value)}
             />
 
-            <label className="text-gray-700" htmlFor="email">
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900"
+              htmlFor="email"
+            >
               Email Address
             </label>
             <input
               type="email"
               id="email"
               value={email}
-              className="rounded-md text-gray-800 bg-gray-100 border-none"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="example@booklyst.com"
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            <label className="text-gray-700 pt-2" htmlFor="password">
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900 pt-2"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
               type="password"
               id="password"
               value={password}
-              className="rounded-md text-gray-800 bg-gray-100 border-none"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="•••••••"
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <label className="text-gray-700 pt-2" htmlFor="password">
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900 pt-2"
+              htmlFor="password"
+            >
               Confirm Password
             </label>
             <input
               type="password"
               id="password"
               value={confirmPassword}
-              className="rounded-md text-gray-800 bg-gray-100 border-none"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="•••••••"
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
 
             <button
               type="submit"
-              className="bg-blue-800 text-white font-semibold text-sm py-2.5 w-36 rounded-md hover:bg-blue-700 transition-colors"
+              className="bg-blue-700 text-white font-semibold text-sm py-2.5 rounded-md hover:bg-blue-800 transition-colors"
             >
               Update
             </button>

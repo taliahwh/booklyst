@@ -140,7 +140,7 @@ const ProductScreen = () => {
 
           {/* Book Overview Container */}
           <div className="flex flex-col space-y-2 pt-10">
-            <h1 className="font-bold text-2xl">Book Overview</h1>
+            {/* <h1 className="font-bold text-2xl">Book Overview</h1>
             <p className="text-sm text-gray-700 pb-2">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo non
               eligendi in facilis at, quibusdam explicabo tenetur fugiat ullam.
@@ -172,7 +172,7 @@ const ProductScreen = () => {
             <p>
               <strong>Print length: </strong>
               {details.number_of_pages || 'N/A'} pages
-            </p>
+            </p> */}
           </div>
         </>
       )}

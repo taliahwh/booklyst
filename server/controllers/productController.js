@@ -25,4 +25,79 @@ const getProductById = asyncHandler(async (req, res) => {
   }
 });
 
-export { getProducts, getProductById };
+// @desc Delete product
+// @route DELETE /api/products/:id
+// @access Private/Admin
+const deleteProduct = asyncHandler(async (req, res) => {
+  const product = await Book.findByIdAndDelete(req.params.id);
+
+  if (product) {
+    res.json({ message: 'Product deleted.' });
+  } else {
+    res.status(404);
+    throw new Error('Product not found');
+  }
+});
+
+// @desc Create new product
+// @route POST /api/products
+// @access Private/Admin
+const createProduct = asyncHandler(async (req, res) => {
+  const product = new Book({
+    user: req.user._id,
+    title: 'Sample Title',
+    author: 'Sample Author',
+    image: '/images/sample.jpg',
+    genre: 'Sample Genre',
+    isbn: 'Sample ISBN',
+    language: 'English',
+    condition: 'Sample Condition',
+    countInStock: 0,
+    price: 0,
+  });
+
+  const createdProduct = await product.save();
+
+  res.status(201).json(createdProduct);
+});
+
+// @desc Update product
+// @route PUT /api/products/:id
+// @access Private/Admin
+const updateProduct = asyncHandler(async (req, res) => {
+  const {
+    title,
+    author,
+    image,
+    isbn,
+    genre,
+    language,
+    condition,
+    price,
+    countInStock,
+  } = req.body;
+
+  const product = await Book.findByIdAndUpdate(req.params.id, {
+    title,
+    author,
+    image,
+    isbn,
+    genre,
+    language,
+    condition,
+    price,
+    countInStock,
+  });
+
+  const updatedProduct = await product.save();
+
+  res.json(updatedProduct);
+});
+
+export {
+  getProducts,
+  getProductById,
+  deleteProduct,
+  createProduct,
+  updateProduct,
+};

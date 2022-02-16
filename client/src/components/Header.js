@@ -149,15 +149,6 @@ const Dropdown = () => {
         </NavLink>
 
         <NavLink
-          to="/"
-          className="flex items-center p-3 space-x-4 text-sm text-gray-600 capitalize transition-colors duration-200 transform  hover:bg-gray-100 "
-        >
-          <i className="fa fa-book-open fa-lg ml-1"></i>
-
-          <span className="mx-1">Lystings</span>
-        </NavLink>
-
-        <NavLink
           to="/myorders"
           className="flex items-center p-3 space-x-6 text-sm text-gray-600 capitalize transition-colors duration-200 transform  hover:bg-gray-100 "
         >
@@ -181,7 +172,7 @@ const Dropdown = () => {
 
             <NavLink
               to="/admin/users"
-              className="flex items-center p-3 space-x-4 text-sm bg-blue-100 text-gray-600 capitalize transition-colors duration-200 transform  hover:bg-white "
+              className="flex items-center p-3 space-x-4 text-sm bg-gray-50 text-gray-600 capitalize transition-colors duration-200 transform  hover:bg-white "
             >
               <i className="fa fa-users fa-lg ml-1"></i>
 
@@ -189,8 +180,8 @@ const Dropdown = () => {
             </NavLink>
 
             <NavLink
-              to="/"
-              className="flex items-center p-3 space-x-4 text-sm bg-blue-100 text-gray-600 capitalize transition-colors duration-200 transform  hover:bg-white "
+              to="/admin/products"
+              className="flex items-center p-3 space-x-4 text-sm bg-gray-50 text-gray-600 capitalize transition-colors duration-200 transform  hover:bg-white "
             >
               <i className="fa fa-book fa-lg ml-1"></i>
 
@@ -198,8 +189,8 @@ const Dropdown = () => {
             </NavLink>
 
             <NavLink
-              to="/"
-              className="flex items-center p-3 space-x-4 text-sm bg-blue-100 text-gray-600 capitalize transition-colors duration-200 transform  hover:bg-white "
+              to="/admin/orders"
+              className="flex items-center p-3 space-x-4 text-sm bg-gray-50 text-gray-600 capitalize transition-colors duration-200 transform  hover:bg-white "
             >
               <i className="fa fa-barcode fa-lg ml-1"></i>
 
