@@ -44,7 +44,7 @@ const CartScreen = () => {
 
   return (
     <>
-      {subtotal < 50 && <ShippingBanner />}
+      {subtotal < 50 && cartItems.length > 0 && <ShippingBanner />}
       <div className="cart-container mx-0 lg:mx-10">
         <div className="cart-items px-4 ">
           {cartItems.length === 0 ? (

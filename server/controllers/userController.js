@@ -3,6 +3,7 @@ import generateToken from '../utils/generateToken.js';
 import bcrypt from 'bcryptjs';
 
 import User from '../models/userModel.js';
+import Book from '../models/bookModel.js';
 
 // @desc Authenticate user & get token
 // @route POST /api/users/signin
@@ -181,6 +182,96 @@ const adminUpdateUser = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc Add product to wishlist
+// @route PUT /api/users/wishlist/:id
+// @access Private
+const addToWishlist = asyncHandler(async (req, res) => {
+  const product = await Book.findById(req.params.id);
+
+  const user = await User.findById(req.user._id);
+
+  if (product && user) {
+    const book = {
+      title: product.title,
+      author: product.author,
+      price: product.price,
+      isbn: product.isbn,
+      image: product.image,
+      genre: product.genre || '',
+      condition: product.condition,
+      countInStock: product.countInStock,
+      language: product.language,
+    };
+
+    const index = user.wishlist.findIndex(
+      (item) => item.title === product.title
+    );
+
+    if (index === -1) {
+      // Add product to wishlist
+      user.wishlist.push(book);
+    } else {
+      // Remove product from wishlist
+      user.wishlist = user.wishlist.filter((item) => item.title !== book.title);
+    }
+
+    await user.save();
+    res.status(201).json(user.wishlist);
+  } else {
+    res.status(404);
+    throw new Error('Product not found');
+  }
+});
+
+// @desc Get user's wishlist
+// @route GET /api/users/wishlist/:id
+// @access Private
+const getWishlist = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    if (req.params.id.toString() !== req.user._id.toString()) {
+      res.status(403);
+      throw new Error('Not authorized');
+    }
+    res.status(200).json(user.wishlist);
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+// @desc Delete product from wishlist (using id from user's wishlist)
+// @route DEL /api/users/wishlist/:id
+// @access Private
+const removeFromWishlist = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    const productFromWishlist = user.wishlist.find(
+      (item) => String(item._id) === String(req.params.id)
+    );
+
+    const product = await Book.find({ title: productFromWishlist.title });
+
+    const index = user.wishlist.findIndex(
+      (item) => item.title === product[0].title
+    );
+
+    if (index > 0) {
+      user.wishlist = user.wishlist.filter(
+        (item) => item.title !== product[0].title
+      );
+    }
+
+    await user.save();
+    res.status(200).json(user.wishlist);
+  } else {
+    res.status(404);
+    throw new Error('Product not found');
+  }
+});
+
 export {
   signIn,
   signUp,
@@ -190,4 +281,7 @@ export {
   deleteUser,
   getUserById,
   adminUpdateUser,
+  addToWishlist,
+  getWishlist,
+  removeFromWishlist,
 };

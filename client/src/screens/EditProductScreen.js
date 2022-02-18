@@ -237,7 +237,7 @@ const EditProductScreen = () => {
                       >
                         The ISBN is printed on the lower portion of the back
                         cover of a book above the bar code.
-                        <div className="tooltip-arrow" data-popper-arrow></div>
+                        <div className="-arrow" data-popper-arrow></div>
                       </div>
                     </div>
 

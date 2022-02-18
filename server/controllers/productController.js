@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 
 import Book from '../models/bookModel.js';
+import User from '../models/userModel.js';
 
 // @desc Fetch all products
 // @route GET /api/products

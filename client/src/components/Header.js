@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
@@ -93,7 +93,12 @@ const CartIcon = () => {
 
 const Dropdown = () => {
   const dispatch = useDispatch();
+
   const { userInfo } = useSelector((state) => state.userLogin);
+
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
 
   return (
     <>
@@ -158,7 +163,7 @@ const Dropdown = () => {
         </NavLink>
 
         <NavLink
-          to="/"
+          to="/wishlist"
           className="flex items-center p-3 space-x-4 text-sm text-gray-600 capitalize transition-colors duration-200 transform  hover:bg-gray-100 "
         >
           <i className="fa fa-heart fa-lg ml-1"></i>
@@ -166,7 +171,7 @@ const Dropdown = () => {
           <span className="mx-1">Wishlist</span>
         </NavLink>
 
-        {userInfo.isAdmin && (
+        {userInfo && userInfo.isAdmin && (
           <>
             <hr className="border-gray-300  " />
 
@@ -207,7 +212,7 @@ const Dropdown = () => {
         >
           <i className="fa fa-cog fa-lg ml-1"></i>
 
-          <span className="mx-1" onClick={() => dispatch(logout())}>
+          <span className="mx-1" onClick={logoutHandler}>
             Logout
           </span>
         </NavLink>

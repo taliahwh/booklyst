@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import { PayPalButton } from 'react-paypal-button-v2';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Loader from '../components/Loader';
@@ -25,7 +25,10 @@ const OrderScreen = () => {
 
   const [sdkReady, setSdkReady] = useState(false);
 
+  const { userInfo } = useSelector((state) => state.userLogin);
+
   const { order, loading, error } = useSelector((state) => state.orderDetails);
+
   const { loading: loadingPay, success: successPay } = useSelector(
     (state) => state.orderPay
   );
@@ -43,6 +46,10 @@ const OrderScreen = () => {
   };
 
   useEffect(() => {
+    if (!userInfo) {
+      navigate('/login');
+    }
+
     // Using vanilla JS, dynamically adding PayPal script to html body
     const addPayPalScript = async () => {
       const { data: clientId } = await axios.get('/api/config/paypal');
@@ -68,7 +75,7 @@ const OrderScreen = () => {
         setSdkReady(true);
       }
     }
-  }, [dispatch, id, successPay, successDeliver, order]);
+  }, [dispatch, id, successPay, successDeliver, order, navigate, userInfo]);
 
   return loading ? (
     <Loader />
@@ -207,7 +214,7 @@ const OrderScreen = () => {
                 </>
               )}
 
-              {order.isPaid && !order.isDelivered && (
+              {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
                 <>
                   {loadingDeliver && <Loader />}
                   <hr className="border-gray-300" />

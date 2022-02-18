@@ -25,6 +25,15 @@ import {
   USER_ADMIN_UPDATE_USER_REQUEST,
   USER_ADMIN_UPDATE_USER_SUCCESS,
   USER_ADMIN_UPDATE_USER_FAILURE,
+  USER_ADD_TO_WISHLIST_REQUEST,
+  USER_ADD_TO_WISHLIST_SUCCESS,
+  USER_ADD_TO_WISHLIST_FAILURE,
+  USER_WISHLIST_REQUEST,
+  USER_WISHLIST_SUCCESS,
+  USER_WISHLIST_FAILURE,
+  USER_DELETE_WISHLIST_REQUEST,
+  USER_DELETE_WISHLIST_SUCCESS,
+  USER_DELETE_WISHLIST_FAILURE,
 } from '../constants/userConstants';
 
 import { ORDER_MY_ORDERS_RESET } from '../constants/orderConstants';
@@ -62,11 +71,17 @@ export const login = (email, password) => async (dispatch) => {
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo');
+  localStorage.removeItem('cartItems');
+  localStorage.removeItem('shippingAddress');
+  localStorage.removeItem('paymentMethod');
+  localStorage.removeItem('__paypal_storage__');
+  localStorage.removeItem('__belter_experiment_storage__');
 
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: ORDER_MY_ORDERS_RESET });
   dispatch({ type: USER_ADMIN_USER_LIST_RESET });
+  document.location.href = '/';
 };
 
 export const signup =
@@ -113,7 +128,6 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     const { userInfo } = getState().userLogin;
     const config = {
       headers: {
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
@@ -122,12 +136,17 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
   } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout());
+    }
+
     dispatch({
       type: USER_DETAILS_FAILURE,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -155,12 +174,16 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     // Save userInfo to local storage
     localStorage.setItem('userInfo', JSON.stringify(data));
   } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout());
+    }
     dispatch({
       type: USER_UPDATE_PROFILE_FAILURE,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -183,12 +206,16 @@ export const getAdminUsers = () => async (dispatch, getState) => {
     dispatch({ type: USER_ADMIN_USER_LIST_SUCCESS, payload: data });
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
   } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout());
+    }
     dispatch({
       type: USER_ADMIN_USER_LIST_FAILURE,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -240,6 +267,83 @@ export const deleteUser = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_ADMIN_DELETE_USER_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const addToWishlist = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_ADD_TO_WISHLIST_REQUEST });
+
+    const { userInfo } = getState().userLogin;
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/users/wishlist/${id}`, {}, config);
+
+    dispatch({ type: USER_ADD_TO_WISHLIST_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_ADD_TO_WISHLIST_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const deleteFromWishlist = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_DELETE_WISHLIST_REQUEST });
+
+    const { userInfo } = getState().userLogin;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`/api/users/wishlist/${id}`, config);
+
+    dispatch({ type: USER_DELETE_WISHLIST_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: USER_DELETE_WISHLIST_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getWishlist = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_WISHLIST_REQUEST });
+
+    const { userInfo } = getState().userLogin;
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/users/wishlist/${id}`, config);
+
+    dispatch({ type: USER_WISHLIST_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_WISHLIST_FAILURE,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

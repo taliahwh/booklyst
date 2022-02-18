@@ -40,10 +40,10 @@ export const createOrder = (order) => async (dispatch, getState) => {
     dispatch({ type: ORDER_CREATE_SUCCESS, payload: data });
 
     // Remove items from cart
-    dispatch({ type: CART_ITEMS_RESET });
+    dispatch({ type: CART_ITEMS_RESET, payload: data });
 
     // Remove items in cart from local storage
-    localStorage.setItem('cartItems', []);
+    localStorage.removeItem('cartItems');
   } catch (error) {
     dispatch({
       type: ORDER_CREATE_FAILURE,
@@ -68,7 +68,6 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
 
     const { data } = await axios.get(`/api/orders/${id}`, config);
 
-    localStorage.setItem('userInfo', JSON.stringify(data));
     dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -94,7 +93,6 @@ export const getMyOrders = () => async (dispatch, getState) => {
 
     const { data } = await axios.get('/api/orders/myorders', config);
 
-    localStorage.setItem('userInfo', JSON.stringify(data));
     dispatch({ type: ORDER_MY_ORDERS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -121,7 +119,6 @@ export const getAllOrders = () => async (dispatch, getState) => {
 
     const { data } = await axios.get('/api/orders', config);
 
-    localStorage.setItem('userInfo', JSON.stringify(data));
     dispatch({ type: ORDER_ADMIN_ORDERS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -153,8 +150,9 @@ export const payOrder =
         config
       );
 
-      localStorage.setItem('userInfo', JSON.stringify(data));
       dispatch({ type: ORDER_PAY_SUCCESS, payload: data });
+      localStorage.removeItem('__paypal_storage__');
+      localStorage.removeItem('__belter_experiment_storage__');
     } catch (error) {
       dispatch({
         type: ORDER_PAY_FAILURE,
@@ -183,7 +181,6 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
       config
     );
 
-    localStorage.setItem('userInfo', JSON.stringify(data));
     dispatch({ type: ORDER_DELIVER_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

@@ -1,23 +1,41 @@
 import mongoose from 'mongoose';
 
-const userReviewSchema = mongoose.Schema(
+const wishlistSchema = mongoose.Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
     },
-    rating: {
+    author: {
+      type: String,
+      required: true,
+    },
+    price: {
       type: Number,
       required: true,
     },
-    comment: {
+    isbn: {
       type: String,
       required: true,
     },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
+    image: {
+      type: String,
       required: true,
-      ref: 'User',
+    },
+    genre: {
+      type: String,
+    },
+    condition: {
+      type: String,
+      required: true,
+    },
+    countInStock: {
+      type: Number,
+      required: true,
+    },
+    language: {
+      type: String,
+      required: true,
     },
   },
   { timestaps: true }
@@ -38,7 +56,7 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    reviews: [userReviewSchema],
+
     numReviews: {
       type: Number,
       requred: true,
@@ -54,7 +72,7 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    wishlist: { type: [String] },
+    wishlist: [wishlistSchema],
   },
   {
     // Automatically generates createdAt and updatedAt fields

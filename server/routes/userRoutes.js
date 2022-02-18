@@ -14,6 +14,9 @@ import {
   deleteUser,
   getUserById,
   adminUpdateUser,
+  addToWishlist,
+  removeFromWishlist,
+  getWishlist,
 } from '../controllers/userController.js';
 
 const router = express.Router();
@@ -33,5 +36,11 @@ router.get('/:id', authMiddleware, isAdmin, getUserById);
 router.put('/:id', authMiddleware, isAdmin, adminUpdateUser);
 
 router.delete('/:id', authMiddleware, isAdmin, deleteUser);
+
+router.get('/wishlist/:id', authMiddleware, getWishlist);
+
+router.put('/wishlist/:id', authMiddleware, addToWishlist);
+
+router.delete('/wishlist/:id', authMiddleware, removeFromWishlist);
 
 export default router;

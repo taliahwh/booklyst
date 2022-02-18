@@ -6,6 +6,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 
 import { listProductDetails } from '../actions/productActions';
+import { addToWishlist, getWishlist } from '../actions/userActions';
 
 const ProductScreen = () => {
   const { id } = useParams();
@@ -19,18 +20,49 @@ const ProductScreen = () => {
     product,
   } = useSelector((state) => state.productDetails);
   const { details } = useSelector((state) => state.productMetaDetails);
+  const { userInfo } = useSelector((state) => state.userLogin);
+  const { wishlist } = useSelector((state) => state.userWishlist);
+  const { success: successAddToWishlist } = useSelector(
+    (state) => state.userAddToWishlist
+  );
+  const { success: successDeleteWishlist } = useSelector(
+    (state) => state.userDeleteWishlist
+  );
 
   const addToCart = () => {
     navigate(`/cart/${id}?qty=${qty}`);
   };
 
-  const addToWishlist = () => {
-    console.log('Add to wishlist');
+  const addWishlistHandler = (id) => {
+    dispatch(addToWishlist(id));
+  };
+
+  const WishlistButton = () => {
+    return (
+      <>
+        {wishlist.find((item) => item.title === product.title) ? (
+          <div className="border-blue-600 border-1 px-5 py-2 rounded-md text-blue-600 text-sm font-semibold hover:bg-blue-600 hover:text-white transition-colors duration-200 transform">
+            <span>
+              <i className="fas fa-heart"></i>
+            </span>{' '}
+            Added to Wishlist
+          </div>
+        ) : (
+          <div className="border-gray-600 border-1 px-5 py-2 rounded-md text-gray-600 text-sm font-semibold hover:bg-blue-600 hover:text-white transition-colors duration-200 transform">
+            <span>
+              <i className="far fa-heart"></i>
+            </span>{' '}
+            Add to Wishlist
+          </div>
+        )}
+      </>
+    );
   };
 
   useEffect(() => {
     dispatch(listProductDetails(id));
-  }, [id, dispatch]);
+    dispatch(getWishlist(userInfo._id));
+  }, [id, dispatch, userInfo._id, successDeleteWishlist, successAddToWishlist]);
 
   return (
     // Container
@@ -97,20 +129,17 @@ const ProductScreen = () => {
                 >
                   {product.countInStock === 0 ? 'Out of Stock' : 'Add to Cart'}
                 </button>
+
                 <button
                   type="button"
-                  onClick={addToWishlist}
-                  className="border-gray-600 border-1 px-5 py-2 rounded-md text-gray-600 text-sm font-semibold hover:bg-blue-600 hover:text-white transition-colors duration-200 transform"
+                  onClick={() => addWishlistHandler(product._id)}
                 >
-                  <span>
-                    <i className="fas fa-heart"></i>
-                  </span>{' '}
-                  Add to Wishlist
+                  <WishlistButton />
                 </button>
               </div>
 
               {/* User Info Container */}
-              <div className="flex space-x-4 pt-4 items-center justify-center md:justify-start">
+              {/* <div className="flex space-x-4 pt-4 items-center justify-center md:justify-start">
                 <div className="userPhoto">
                   <img
                     className="rounded-full h-12 w-12"
@@ -134,7 +163,7 @@ const ProductScreen = () => {
                     <h4 className="text-sm text-blue-600">5 Ratings</h4>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 

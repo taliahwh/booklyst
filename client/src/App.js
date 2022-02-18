@@ -19,6 +19,7 @@ import AdminEditUserScreen from './screens/AdminEditUserScreen';
 import AdminProductListScreen from './screens/AdminProductListScreen';
 import AdminOrderListScreen from './screens/AdminOrderListScreen';
 import EditProductScreen from './screens/EditProductScreen';
+import WishlistScreen from './screens/WishlistScreen';
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/signup" element={<SignUpScreen />} />
           <Route path="/profile" element={<ProfileScreen />} />
+          <Route path="/wishlist" element={<WishlistScreen />} />
           <Route path="/shipping" element={<ShippingScreen />} />
           <Route path="/payment" element={<PaymentScreen />} />
           <Route path="/placeorder" element={<PlaceOrderScreen />} />
