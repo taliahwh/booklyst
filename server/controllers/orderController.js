@@ -31,6 +31,18 @@ const addOrderItems = asyncHandler(async (req, res) => {
     totalPrice,
   });
 
+  // update quantity of products
+  await Promise.all(
+    orderItems.map(
+      async (item) =>
+        await Book.findByIdAndUpdate(
+          item.id,
+          { countInStock: item.countInStock - item.qty },
+          { new: true }
+        )
+    )
+  );
+
   const createdOrder = await order.save();
 
   // const orderedItems = createdOrder.orderItems.map((item) => item.id);
