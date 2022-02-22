@@ -28,7 +28,14 @@ const App = () => {
       <main className="container px-6 py-4 mx-auto">
         <Routes>
           <Route path="/" exact element={<HomeScreen />} />
-          <Route path="/product/:id" exact element={<ProductScreen />} />
+          <Route path="/page/:pageNumber" exact element={<HomeScreen />} />
+          <Route
+            path="search/:keyword/page/:pageNumber"
+            exact
+            element={<HomeScreen />}
+          />
+          <Route path="/search/:keyword" exact element={<HomeScreen />} />
+          <Route path="/product/:id" element={<ProductScreen />} />
           <Route path="/cart/:id" element={<CartScreen />} />
           <Route path="/cart" element={<CartScreen />} />
           <Route path="/login" element={<LoginScreen />} />
@@ -42,7 +49,16 @@ const App = () => {
           <Route path="/myorders" element={<OrderListScreen />} />
           <Route path="/admin/users" element={<AdminUserListScreen />} />
           <Route path="/admin/user/:id" element={<AdminEditUserScreen />} />
-          <Route path="/admin/products" element={<AdminProductListScreen />} />
+          <Route
+            path="/admin/products"
+            exact
+            element={<AdminProductListScreen />}
+          />
+          <Route
+            path="/admin/products/:pageNumber"
+            exact
+            element={<AdminProductListScreen />}
+          />
           <Route path="/admin/orders" element={<AdminOrderListScreen />} />
           <Route
             path="/admin/product/:id/edit"

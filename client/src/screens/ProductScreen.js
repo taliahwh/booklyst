@@ -20,6 +20,7 @@ const ProductScreen = () => {
     loading: loadingProduct,
     error: errorProduct,
     product,
+    success: loadingProductSuccess,
   } = useSelector((state) => state.productDetails);
 
   const {

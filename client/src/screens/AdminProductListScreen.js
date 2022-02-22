@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import Pagination from '../components/Pagination';
 
 import {
   listProducts,
@@ -16,10 +17,11 @@ import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
 const AdminProductListScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { pageNumber } = useParams() || 1;
 
   const { userInfo } = useSelector((state) => state.userLogin);
 
-  const { loading, error, products } = useSelector(
+  const { loading, error, products, pages, page } = useSelector(
     (state) => state.productList
   );
 
@@ -50,7 +52,7 @@ const AdminProductListScreen = () => {
     if (createProductSuccess) {
       navigate(`/admin/product/${createdProduct._id}/edit`);
     } else {
-      dispatch(listProducts());
+      dispatch(listProducts('', pageNumber));
     }
     // dispatch(listProducts());
   }, [
@@ -60,6 +62,7 @@ const AdminProductListScreen = () => {
     successDelete,
     createProductSuccess,
     createdProduct,
+    pageNumber,
   ]);
 
   return (
@@ -181,6 +184,7 @@ const AdminProductListScreen = () => {
                 </div>
               </div>
             </div>
+            <Pagination page={page} pages={pages} isAdmin={true} />
           </div>
         </>
       )}
