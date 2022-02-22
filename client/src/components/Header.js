@@ -20,16 +20,6 @@ const Header = () => {
             </NavLink>
           </div>
 
-          {/* List a Book button */}
-          {/* <div>
-            <NavLink
-              to="/"
-              className="text-sm font-semibold text-white bg-blue-600 px-6 py-2 rounded-full transition-colors duration-200 transform  hover:bg-blue-700 "
-            >
-              + Lyst a Book
-            </NavLink>
-          </div> */}
-
           {/* Sign in and cart */}
 
           <div className="flex space-x-2 items-center">
