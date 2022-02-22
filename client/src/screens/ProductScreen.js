@@ -5,6 +5,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Rating from '../components/Rating';
+import ScrollToTop from '../components/ScrollToTop';
 import ReviewCard from '../components/ReviewCard';
 
 import { listProductDetails } from '../actions/productActions';
@@ -34,10 +35,6 @@ const ProductScreen = () => {
     description,
     error: errorDescription,
   } = useSelector((state) => state.productDescription);
-
-  const { popularReviews } = useSelector(
-    (state) => state.productDescription.description
-  );
 
   const { userInfo } = useSelector((state) => state.userLogin);
   const { wishlist } = useSelector((state) => state.userWishlist);
@@ -85,137 +82,142 @@ const ProductScreen = () => {
 
   return (
     // Container
+    <>
+      <ScrollToTop />
 
-    <div className="my-10 ml-2">
-      {loadingProduct && loadingDescription ? (
-        <Loader />
-      ) : errorProduct || errorDescription ? (
-        <Message>{errorProduct || errorDescription}</Message>
-      ) : (
-        <>
-          <button className="my-4 text-sm text-gray-700">
-            <Link to="/">
-              <span>
-                <i className="fas fa-chevron-left fa-xs gray-700 mr-1"></i>
-              </span>
-              Go back
-            </Link>
-          </button>
-          {/* Image and Details Container */}
-          <div className="flex flex-col md:flex-row space-x-10 items-center md:items-start">
-            <img
-              className="h-120 md:h-128"
-              src={product.image}
-              alt={product.title}
-            />
-            {/* Details Container */}
-            <div className="flex flex-col space-y-2 text-center md:text-left mt-4 md:mt-0">
-              <h1 className="text-2xl md:text-3xl font-bold">
-                {product.title}
-              </h1>
-              <div className="flex space-x-4 items-center justify-center md:justify-start">
-                <h4 className="text-sm md:text-md text-gray-700">
-                  by {product.author}
-                </h4>
-                <Rating
-                  value={description.rating}
-                  text={`(${description.ratings}) reviews`}
-                />
-              </div>
+      <div className="my-10 ml-2">
+        {loadingProduct && loadingDescription ? (
+          <Loader />
+        ) : errorProduct || errorDescription ? (
+          <Message>{errorProduct || errorDescription}</Message>
+        ) : (
+          <>
+            <button className="my-4 text-sm text-gray-700">
+              <Link to="/">
+                <span>
+                  <i className="fas fa-chevron-left fa-xs gray-700 mr-1"></i>
+                </span>
+                Go back
+              </Link>
+            </button>
+            {/* Image and Details Container */}
+            <div className="flex flex-col md:flex-row space-x-10 items-center md:items-start">
+              <img
+                className="h-120 md:h-128"
+                src={product.image}
+                alt={product.title}
+              />
+              {/* Details Container */}
+              <div className="flex flex-col space-y-2 text-center md:text-left mt-4 md:mt-0">
+                <h1 className="text-2xl md:text-3xl font-bold">
+                  {product.title}
+                </h1>
+                <div className="flex space-x-4 items-center justify-center md:justify-start">
+                  <h4 className="text-sm md:text-md text-gray-700">
+                    by {product.author}
+                  </h4>
+                  <Rating
+                    value={description.rating}
+                    text={`(${description.ratings}) reviews`}
+                  />
+                </div>
 
-              <hr className="border-gray-300 w-96" />
-              <h3 className="text-md md:text-lg font-semibold">
-                {product.coverType}
-              </h3>
-              <h3 className="text-2xl font-bold">${product.price}</h3>
+                <hr className="border-gray-300 w-96" />
+                <h3 className="text-md md:text-lg font-semibold">
+                  {product.coverType}
+                </h3>
+                <h3 className="text-2xl font-bold">${product.price}</h3>
 
-              {/* QTY, Add to Cart, and Wishlist Buttons */}
+                {/* QTY, Add to Cart, and Wishlist Buttons */}
 
-              <div className="flex space-x-2 py-2 justify-evenly md:justify-start">
-                {product.countInStock > 0 && (
-                  <select
-                    id="qty"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md "
-                    value={qty}
-                    onChange={(e) => setQty(e.target.value)}
+                <div className="flex space-x-2 py-2 justify-evenly md:justify-start">
+                  {product.countInStock > 0 && (
+                    <select
+                      id="qty"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md "
+                      value={qty}
+                      onChange={(e) => setQty(e.target.value)}
+                    >
+                      {[...Array(product.countInStock).keys()].map((x) => (
+                        <option key={x + 1} value={x + 1}>
+                          {x + 1}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={addToCart}
+                    disabled={product.countInStock === 0}
+                    className="bg-blue-600 px-8 py-2 rounded-md text-white text-sm font-semibold hover:bg-blue-700 transition-colors duration-200 transform"
                   >
-                    {[...Array(product.countInStock).keys()].map((x) => (
-                      <option key={x + 1} value={x + 1}>
-                        {x + 1}
-                      </option>
-                    ))}
-                  </select>
-                )}
+                    {product.countInStock === 0
+                      ? 'Out of Stock'
+                      : 'Add to Cart'}
+                  </button>
 
-                <button
-                  type="button"
-                  onClick={addToCart}
-                  disabled={product.countInStock === 0}
-                  className="bg-blue-600 px-8 py-2 rounded-md text-white text-sm font-semibold hover:bg-blue-700 transition-colors duration-200 transform"
-                >
-                  {product.countInStock === 0 ? 'Out of Stock' : 'Add to Cart'}
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => addWishlistHandler(product._id)}
+                  >
+                    <WishlistButton />
+                  </button>
+                </div>
 
-                <button
-                  type="button"
-                  onClick={() => addWishlistHandler(product._id)}
-                >
-                  <WishlistButton />
-                </button>
-              </div>
-
-              {/* User Info Container */}
-              <div className="flex flex-col space-y-2">
-                <hr className="gray-300 py-1" />
-                <p>
-                  <strong>Condition: </strong>
-                  {product.condition}
-                </p>
-                <p>
-                  <strong>Genre: </strong>Literary Fiction
-                </p>
-                {details.publishers && (
+                {/* User Info Container */}
+                <div className="flex flex-col space-y-2">
+                  <hr className="gray-300 py-1" />
                   <p>
-                    <strong>Publishers: </strong>
-                    {details.publishers}
+                    <strong>Condition: </strong>
+                    {product.condition}
                   </p>
-                )}
-                <p>
-                  <strong>Release Date: </strong>
-                  {details.publish_date}
-                </p>
-                <p>
-                  <strong>Language: </strong>English
-                </p>
-                <p>
-                  <strong>Print length: </strong>
-                  {details.number_of_pages || 'N/A'} pages
-                </p>
+                  <p>
+                    <strong>Genre: </strong>Literary Fiction
+                  </p>
+                  {details.publishers && (
+                    <p>
+                      <strong>Publishers: </strong>
+                      {details.publishers}
+                    </p>
+                  )}
+                  <p>
+                    <strong>Release Date: </strong>
+                    {details.publish_date}
+                  </p>
+                  <p>
+                    <strong>Language: </strong>English
+                  </p>
+                  <p>
+                    <strong>Print length: </strong>
+                    {details.number_of_pages || 'N/A'} pages
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Book Overview Container */}
-          <div className="flex flex-col space-y-2 pt-10">
-            <h1 className="font-bold text-2xl">Book Overview</h1>
-            <p className="text-sm text-gray-700 pb-2 leading-relaxed">
-              {description.description}
-            </p>
+            {/* Book Overview Container */}
+            <div className="flex flex-col space-y-2 pt-10">
+              <h1 className="font-bold text-2xl">Book Overview</h1>
+              <p className="text-sm text-gray-700 pb-2 leading-relaxed">
+                {description.description}
+              </p>
 
-            <hr className="gray-300 py-1" />
+              <hr className="gray-300 py-1" />
 
-            <h1 className="font-bold text-2xl pb-2">Popular Reviews</h1>
+              <h1 className="font-bold text-2xl pb-2">Popular Reviews</h1>
 
-            {/* {
-              popularReviews.slice(0, 5).map((review) => (
-                <div key={Math.random()}>
-                  <ReviewCard review={review} />
-                </div>
-              ))} */}
-          </div>
-        </>
-      )}
-    </div>
+              {description.popularReviews &&
+                description.popularReviews.slice(0, 5).map((review) => (
+                  <div key={Math.random()}>
+                    <ReviewCard review={review} />
+                  </div>
+                ))}
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 
