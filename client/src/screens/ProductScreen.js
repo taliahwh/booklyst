@@ -21,16 +21,23 @@ const ProductScreen = () => {
     error: errorProduct,
     product,
   } = useSelector((state) => state.productDetails);
+
   const {
     loading: loadingDetails,
     details,
     error: errorDetails,
   } = useSelector((state) => state.productMetaDetails);
+
   const {
     loading: loadingDescription,
     description,
     error: errorDescription,
   } = useSelector((state) => state.productDescription);
+
+  const { popularReviews } = useSelector(
+    (state) => state.productDescription.description
+  );
+
   const { userInfo } = useSelector((state) => state.userLogin);
   const { wishlist } = useSelector((state) => state.userWishlist);
   const { success: successAddToWishlist } = useSelector(
@@ -79,10 +86,10 @@ const ProductScreen = () => {
     // Container
 
     <div className="my-10 ml-2">
-      {loadingProduct ? (
+      {loadingProduct && loadingDescription ? (
         <Loader />
-      ) : errorProduct ? (
-        <Message>{errorProduct}</Message>
+      ) : errorProduct || errorDescription ? (
+        <Message>{errorProduct || errorDescription}</Message>
       ) : (
         <>
           <button className="my-4 text-sm text-gray-700">
@@ -191,20 +198,19 @@ const ProductScreen = () => {
           <div className="flex flex-col space-y-2 pt-10">
             <h1 className="font-bold text-2xl">Book Overview</h1>
             <p className="text-sm text-gray-700 pb-2 leading-relaxed">
-              {loadingDescription ? <Loader /> : description.description}
+              {description.description}
             </p>
 
             <hr className="gray-300 py-1" />
 
             <h1 className="font-bold text-2xl pb-2">Popular Reviews</h1>
 
-            {description.popularReviews.slice(0, 5).map((review) => (
-              <div key={Math.random()}>
-                <ReviewCard review={review} />
-              </div>
-            ))}
-
-            {/* <ReviewCard /> */}
+            {/* {
+              popularReviews.slice(0, 5).map((review) => (
+                <div key={Math.random()}>
+                  <ReviewCard review={review} />
+                </div>
+              ))} */}
           </div>
         </>
       )}

@@ -63,7 +63,10 @@ export const productMetaDetailsReducer = (state = { details: {} }, action) => {
   }
 };
 
-export const productDescriptionReducer = (state = {}, action) => {
+export const productDescriptionReducer = (
+  state = { description: {} },
+  action
+) => {
   switch (action.type) {
     case PRODUCT_DESCRIPTION_REQUEST:
       return { loading: true, ...state };

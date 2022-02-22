@@ -58,7 +58,7 @@ export const listProductDetails = (id) => async (dispatch) => {
       params: { isbn: data.isbn },
       headers: {
         'x-rapidapi-host': 'goodreads-books.p.rapidapi.com',
-        'x-rapidapi-key': '52646b3322mshd275ea478b89b6cp15f9abjsn2b7ef0b80ce1',
+        'x-rapidapi-key': process.env.REACT_APP_GOODREADS_API_KEY,
       },
     };
 
