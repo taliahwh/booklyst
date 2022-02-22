@@ -8,6 +8,9 @@ import {
   PRODUCT_META_DETAILS_REQUEST,
   PRODUCT_META_DETAILS_SUCCESS,
   PRODUCT_META_DETAILS_FAILURE,
+  PRODUCT_DESCRIPTION_REQUEST,
+  PRODUCT_DESCRIPTION_SUCCESS,
+  PRODUCT_DESCRIPTION_FAILURE,
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DELETE_FAILURE,
@@ -54,6 +57,19 @@ export const productMetaDetailsReducer = (state = { details: {} }, action) => {
     case PRODUCT_META_DETAILS_SUCCESS:
       return { loading: false, details: action.payload };
     case PRODUCT_META_DETAILS_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const productDescriptionReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_DESCRIPTION_REQUEST:
+      return { loading: true, ...state };
+    case PRODUCT_DESCRIPTION_SUCCESS:
+      return { loading: false, description: action.payload };
+    case PRODUCT_DESCRIPTION_FAILURE:
       return { loading: false, error: action.payload };
     default:
       return state;

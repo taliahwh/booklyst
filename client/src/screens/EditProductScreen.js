@@ -6,7 +6,10 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 
-import { listProductDetails, updateProduct } from '../actions/productActions';
+import {
+  listNewProductDetails,
+  updateProduct,
+} from '../actions/productActions';
 
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
 
@@ -88,7 +91,7 @@ const EditProductScreen = () => {
       navigate('/admin/products');
     } else {
       if (!product.title || product._id !== id) {
-        dispatch(listProductDetails(id));
+        dispatch(listNewProductDetails(id));
       } else {
         setImage(product.image);
         setTitle(product.title);

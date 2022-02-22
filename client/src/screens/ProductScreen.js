@@ -4,6 +4,8 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import Rating from '../components/Rating';
+import ReviewCard from '../components/ReviewCard';
 
 import { listProductDetails } from '../actions/productActions';
 import { addToWishlist, getWishlist } from '../actions/userActions';
@@ -19,7 +21,16 @@ const ProductScreen = () => {
     error: errorProduct,
     product,
   } = useSelector((state) => state.productDetails);
-  const { details } = useSelector((state) => state.productMetaDetails);
+  const {
+    loading: loadingDetails,
+    details,
+    error: errorDetails,
+  } = useSelector((state) => state.productMetaDetails);
+  const {
+    loading: loadingDescription,
+    description,
+    error: errorDescription,
+  } = useSelector((state) => state.productDescription);
   const { userInfo } = useSelector((state) => state.userLogin);
   const { wishlist } = useSelector((state) => state.userWishlist);
   const { success: successAddToWishlist } = useSelector(
@@ -94,9 +105,16 @@ const ProductScreen = () => {
               <h1 className="text-2xl md:text-3xl font-bold">
                 {product.title}
               </h1>
-              <h4 className="text-sm md:text-md text-gray-700">
-                by {product.author}
-              </h4>
+              <div className="flex space-x-4 items-center justify-center md:justify-start">
+                <h4 className="text-sm md:text-md text-gray-700">
+                  by {product.author}
+                </h4>
+                <Rating
+                  value={description.rating}
+                  text={`(${description.ratings}) reviews`}
+                />
+              </div>
+
               <hr className="border-gray-300 w-96" />
               <h3 className="text-md md:text-lg font-semibold">
                 {product.coverType}
@@ -139,69 +157,54 @@ const ProductScreen = () => {
               </div>
 
               {/* User Info Container */}
-              {/* <div className="flex space-x-4 pt-4 items-center justify-center md:justify-start">
-                <div className="userPhoto">
-                  <img
-                    className="rounded-full h-12 w-12"
-                    src="https://images.unsplash.com/photo-1568822617270-2c1579f8dfe2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80"
-                    alt="user"
-                  />
-                </div>
-
-                <div className="userDetails flex flex-col space-y-1">
-                  <h4 className="font-semibold">Toni M.</h4>
-
-                  <div className="location flex space-x-2 items-center">
-                    <div className="starsTemporary flex space-x-2">
-                      <i className="fas fa-star fa-xs text-yellow-300"></i>
-                      <i className="fas fa-star fa-xs text-yellow-300"></i>
-                      <i className="fas fa-star fa-xs text-yellow-300"></i>
-                      <i className="fas fa-star fa-xs text-yellow-300"></i>
-                      <i className="fas fa-star fa-xs text-yellow-300"></i>
-                    </div>
-
-                    <h4 className="text-sm text-blue-600">5 Ratings</h4>
-                  </div>
-                </div>
-              </div> */}
+              <div className="flex flex-col space-y-2">
+                <hr className="gray-300 py-1" />
+                <p>
+                  <strong>Condition: </strong>
+                  {product.condition}
+                </p>
+                <p>
+                  <strong>Genre: </strong>Literary Fiction
+                </p>
+                {details.publishers && (
+                  <p>
+                    <strong>Publishers: </strong>
+                    {details.publishers}
+                  </p>
+                )}
+                <p>
+                  <strong>Release Date: </strong>
+                  {details.publish_date}
+                </p>
+                <p>
+                  <strong>Language: </strong>English
+                </p>
+                <p>
+                  <strong>Print length: </strong>
+                  {details.number_of_pages || 'N/A'} pages
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Book Overview Container */}
           <div className="flex flex-col space-y-2 pt-10">
-            {/* <h1 className="font-bold text-2xl">Book Overview</h1>
-            <p className="text-sm text-gray-700 pb-2">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo non
-              eligendi in facilis at, quibusdam explicabo tenetur fugiat ullam.
-              Blanditiis libero iure magni corporis, sint eum dolorum sunt
-              repudiandae natus. Tenetur alias autem voluptates porro laborum
-              sequi doloribus cupiditate maxime ullam nostrum id at aliquid
-              accusantium eos et, sapiente dignissimos saepe? Velit eaque
-              dignissimos esse debitis placeat, saepe quibusdam culpa.
+            <h1 className="font-bold text-2xl">Book Overview</h1>
+            <p className="text-sm text-gray-700 pb-2 leading-relaxed">
+              {loadingDescription ? <Loader /> : description.description}
             </p>
+
             <hr className="gray-300 py-1" />
-            <p>
-              <strong>Condition: </strong>
-              {product.condition}
-            </p>
-            <p>
-              <strong>Genre: </strong>Literary Fiction
-            </p>
-            <p>
-              <strong>Publishers: </strong>
-              {details.publishers}
-            </p>
-            <p>
-              <strong>Release Date: </strong>
-              {details.publish_date}
-            </p>
-            <p>
-              <strong>Language: </strong>English
-            </p>
-            <p>
-              <strong>Print length: </strong>
-              {details.number_of_pages || 'N/A'} pages
-            </p> */}
+
+            <h1 className="font-bold text-2xl pb-2">Popular Reviews</h1>
+
+            {description.popularReviews.slice(0, 5).map((review) => (
+              <div key={Math.random()}>
+                <ReviewCard review={review} />
+              </div>
+            ))}
+
+            {/* <ReviewCard /> */}
           </div>
         </>
       )}

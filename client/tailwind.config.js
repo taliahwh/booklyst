@@ -1,3 +1,5 @@
+const tailwindcss = require('tailwindcss');
+
 module.exports = {
   content: [
     './src/**/*.{js,jsx,ts,tsx}',
@@ -15,5 +17,11 @@ module.exports = {
       backgroundColor: ['disabled'],
     },
   },
-  plugins: [require('@themesberg/flowbite/plugin')],
+  extend: {
+    lineClamp: ['hover'],
+  },
+  plugins: [
+    require('@themesberg/flowbite/plugin'),
+    require('@tailwindcss/line-clamp'),
+  ],
 };

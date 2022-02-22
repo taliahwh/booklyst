@@ -14,7 +14,6 @@ const Book = ({ book }) => {
       <img className="mb-2" src={book.image} alt={book.title} />
       <h3 className="font-semibold text-lg">{book.title}</h3>
       <p className="text-xs text-gray-600">{book.author}</p>
-      <Rating value={book.rating} text={`${book.numReviews} reviews`} />
 
       <h4 className="price text-xl font-semibold">{`$${book.price.toFixed(
         2

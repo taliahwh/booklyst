@@ -10,6 +10,9 @@ import {
   PRODUCT_META_DETAILS_REQUEST,
   PRODUCT_META_DETAILS_SUCCESS,
   PRODUCT_META_DETAILS_FAILURE,
+  PRODUCT_DESCRIPTION_REQUEST,
+  PRODUCT_DESCRIPTION_SUCCESS,
+  PRODUCT_DESCRIPTION_FAILURE,
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DELETE_FAILURE,
@@ -45,13 +48,34 @@ export const listProductDetails = (id) => async (dispatch) => {
 
     const { data } = await axios.get(`/api/products/${id}`);
 
-    // dispatch({ type: PRODUCT_META_DETAILS_REQUEST });
-    // const res = await axios.get(
-    //   `https://openlibrary.org/isbn/${data.isbn}.json`
-    // );
+    dispatch({ type: PRODUCT_META_DETAILS_REQUEST });
+    const metaDetailsResult = await axios.get(
+      `https://openlibrary.org/isbn/${data.isbn}.json`
+    );
+
+    dispatch({ type: PRODUCT_DESCRIPTION_REQUEST });
+    const config = {
+      params: { isbn: data.isbn },
+      headers: {
+        'x-rapidapi-host': 'goodreads-books.p.rapidapi.com',
+        'x-rapidapi-key': '52646b3322mshd275ea478b89b6cp15f9abjsn2b7ef0b80ce1',
+      },
+    };
+
+    const descriptionResult = await axios.get(
+      'https://goodreads-books.p.rapidapi.com/search',
+      config
+    );
 
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
-    // dispatch({ type: PRODUCT_META_DETAILS_SUCCESS, payload: res.data });
+    dispatch({
+      type: PRODUCT_META_DETAILS_SUCCESS,
+      payload: metaDetailsResult.data,
+    });
+    dispatch({
+      type: PRODUCT_DESCRIPTION_SUCCESS,
+      payload: descriptionResult.data,
+    });
   } catch (error) {
     dispatch({
       type: PRODUCT_DETAILS_FAILURE,
@@ -60,13 +84,38 @@ export const listProductDetails = (id) => async (dispatch) => {
           ? error.response.data.message
           : error.message,
     });
-    // dispatch({
-    //   type: PRODUCT_META_DETAILS_FAILURE,
-    //   payload:
-    //     error.response && error.response.data.message
-    //       ? error.response.data.message
-    //       : error.message,
-    // });
+    dispatch({
+      type: PRODUCT_META_DETAILS_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+    dispatch({
+      type: PRODUCT_DESCRIPTION_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listNewProductDetails = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_DETAILS_REQUEST });
+
+    const { data } = await axios.get(`/api/products/${id}`);
+
+    dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_DETAILS_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
   }
 };
 

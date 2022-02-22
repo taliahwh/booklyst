@@ -45,12 +45,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
 
   const createdOrder = await order.save();
 
-  // const orderedItems = createdOrder.orderItems.map((item) => item.id);
-  // console.log(orderedItems);
-
-  // const products = await Book.find({ _id: orderedItems });
-  // console.log(products);
-
   res.status(201).json(createdOrder);
 });
 
