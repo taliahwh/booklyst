@@ -62,7 +62,7 @@ const AdminEditUserScreen = () => {
 
   return (
     <div className="container">
-      <div className="container px-60 pt-10 pb-20 bg-white">
+      <div className="container pt-10 pb-20 bg-white px-4 sm:px-20 lg:px-48">
         {/* User Profile Container */}
         <div className="col-span-2 ">
           <form className="flex flex-col space-y-2" onSubmit={handleSubmit}>
@@ -74,26 +74,32 @@ const AdminEditUserScreen = () => {
               <Message variant="success">Profile updated.</Message>
             )}
 
-            <label className="text-gray-700" htmlFor="name">
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900"
+              htmlFor="name"
+            >
               Name
             </label>
             <input
               type="text"
               id="name"
               value={name}
-              className="rounded-md text-gray-800 bg-gray-100 border-none"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="Enter name"
               onChange={(e) => setName(e.target.value)}
             />
 
-            <label className="text-gray-700" htmlFor="email">
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900"
+              htmlFor="email"
+            >
               Email Address
             </label>
             <input
               type="email"
               id="email"
               value={email}
-              className="rounded-md text-gray-800 bg-gray-100 border-none"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="example@booklyst.com"
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -107,7 +113,7 @@ const AdminEditUserScreen = () => {
                 onChange={(e) => setIsAdmin(e.target.checked)}
               />
               <label
-                className="form-check-label inline-block text-gray-800"
+                className="form-check-label inline-block mb-2 text-sm font-medium text-gray-900"
                 htmlFor="isAdmin"
               >
                 Admin
