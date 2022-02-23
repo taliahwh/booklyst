@@ -130,7 +130,7 @@ const ProductScreen = () => {
 
                 {/* QTY, Add to Cart, and Wishlist Buttons */}
 
-                <div className="flex space-x-2 py-2 justify-evenly md:justify-start">
+                <div className="flex space-x-2 py-2 px-4 sm:px-0 justify-evenly md:justify-start">
                   {product.countInStock > 0 && (
                     <select
                       id="qty"
