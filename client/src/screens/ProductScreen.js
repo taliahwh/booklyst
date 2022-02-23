@@ -77,8 +77,11 @@ const ProductScreen = () => {
 
   useEffect(() => {
     dispatch(listProductDetails(id));
-    dispatch(getWishlist(userInfo._id));
-  }, [id, dispatch, userInfo._id, successDeleteWishlist, successAddToWishlist]);
+
+    if (userInfo !== null) {
+      dispatch(getWishlist(userInfo._id));
+    }
+  }, [id, dispatch, successDeleteWishlist, successAddToWishlist, userInfo]);
 
   return (
     // Container
