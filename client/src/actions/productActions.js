@@ -58,17 +58,9 @@ export const listProductDetails = (id) => async (dispatch) => {
     );
 
     dispatch({ type: PRODUCT_DESCRIPTION_REQUEST });
-    const config = {
-      params: { isbn: data.isbn },
-      headers: {
-        'x-rapidapi-host': 'goodreads-books.p.rapidapi.com',
-        'x-rapidapi-key': process.env.REACT_APP_GOODREADS_API_KEY,
-      },
-    };
 
     const descriptionResult = await axios.get(
-      'https://goodreads-books.p.rapidapi.com/search',
-      config
+      `https://www.googleapis.com/books/v1/volumes?q=${data.title}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}`
     );
 
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
@@ -78,8 +70,10 @@ export const listProductDetails = (id) => async (dispatch) => {
     });
     dispatch({
       type: PRODUCT_DESCRIPTION_SUCCESS,
-      payload: descriptionResult.data,
+      payload: descriptionResult.data.items[0].volumeInfo,
     });
+
+    // console.log(descriptionResult.data.items[0].volumeInfo);
   } catch (error) {
     dispatch({
       type: PRODUCT_DETAILS_FAILURE,
