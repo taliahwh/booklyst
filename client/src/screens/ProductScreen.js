@@ -31,9 +31,9 @@ const ProductScreen = () => {
   } = useSelector((state) => state.productMetaDetails);
 
   const {
-    loading: loadingDescription,
-    description,
-    error: errorDescription,
+    loading: loadingGoogleBooksDetails,
+    description: googleBooksDetails,
+    error: errorGoogleBooksDetails,
   } = useSelector((state) => state.productDescription);
 
   const { userInfo } = useSelector((state) => state.userLogin);
@@ -81,7 +81,14 @@ const ProductScreen = () => {
     if (userInfo !== null) {
       dispatch(getWishlist(userInfo._id));
     }
-  }, [id, dispatch, successDeleteWishlist, successAddToWishlist, userInfo]);
+  }, [
+    id,
+    dispatch,
+    successDeleteWishlist,
+    successAddToWishlist,
+    userInfo,
+    googleBooksDetails,
+  ]);
 
   return (
     // Container
@@ -89,10 +96,10 @@ const ProductScreen = () => {
       <ScrollToTop />
 
       <div className="my-10 ml-2">
-        {loadingProduct && loadingDescription ? (
+        {loadingProduct || loadingGoogleBooksDetails ? (
           <Loader />
-        ) : errorProduct || errorDescription ? (
-          <Message>{errorProduct || errorDescription}</Message>
+        ) : errorProduct || errorGoogleBooksDetails ? (
+          <Message>{errorProduct || errorGoogleBooksDetails}</Message>
         ) : (
           <>
             <button className="my-4 text-sm text-gray-700">
@@ -120,9 +127,10 @@ const ProductScreen = () => {
                     by {product.author}
                   </h4>
                   <Rating
-                    value={description.rating}
-                    text={`(${description.ratings}) reviews`}
+                    value={googleBooksDetails.averageRating}
+                    text={`(${googleBooksDetails.averageRating}) reviews`}
                   />
+                  Ratings
                 </div>
 
                 <hr className="border-gray-300 w-96" />
@@ -203,19 +211,19 @@ const ProductScreen = () => {
             <div className="flex flex-col space-y-2 pt-10">
               <h1 className="font-bold text-2xl">Book Overview</h1>
               <p className="text-sm text-gray-700 pb-2 leading-relaxed">
-                {description.description}
+                {googleBooksDetails.description}
               </p>
 
-              <hr className="gray-300 py-1" />
+              {/* <hr className="gray-300 py-1" />
 
-              <h1 className="font-bold text-2xl pb-2">Popular Reviews</h1>
+              <h1 className="font-bold text-2xl pb-2">Popular Reviews</h1> */}
 
-              {description.popularReviews &&
-                description.popularReviews.slice(0, 5).map((review) => (
-                  <div key={Math.random()}>
-                    <ReviewCard review={review} />
-                  </div>
-                ))}
+              {/* {description.popularReviews &&
+            description.popularReviews.slice(0, 5).map((review) => (
+              <div key={Math.random()}>
+                <ReviewCard review={review} />
+              </div>
+            ))} */}
             </div>
           </>
         )}
