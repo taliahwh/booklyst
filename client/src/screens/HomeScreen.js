@@ -20,6 +20,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     dispatch(listProducts(keyword, pageNumber));
+    console.log(process.env.REACT_APP_TEST_API);
   }, [dispatch, keyword, pageNumber]);
   return (
     <div className="my-10">
