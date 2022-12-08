@@ -56,6 +56,7 @@ E-commerce app to buy and sell used books. Makes use of the Google Books API for
 * [![Node.js][Node.js-Badge]][Node.js-url]
 * [![Express.js][Express.js-Badge]][Express.js-url]
 * [![PayPal][PayPal-Badge]][PayPal-url]
+* [![Redux][Redux-Badge]][Redux-url]
 
 </hr>
 
